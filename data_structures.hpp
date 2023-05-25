@@ -1,10 +1,8 @@
 #ifndef DATASTRUCTURES
 #define DATASTRUCTURES
 
-#include "log.hpp"
-
 #include <cassert>
-#include <cstdint>
+#include "log.hpp"
 
 enum class Alloc
 {
@@ -117,7 +115,7 @@ template <class Type> struct array
     {
 #ifdef DEBUG
         if (index >= length)
-            log ("[ASSERT] index: %d -- length: %d", index, length);
+            debug ("[ASSERT] index: %d -- length: %d", index, length);
 #endif
 
         assert (index < length);

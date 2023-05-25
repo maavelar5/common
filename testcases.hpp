@@ -1,7 +1,8 @@
 #ifndef TESTCASES
 #define TESTCASES
 
-#include "dataStructures.hpp"
+#include "data_structures.hpp"
+#include "math_data.hpp"
 #include "log.hpp"
 
 void testUnique ()
@@ -166,9 +167,67 @@ void testTrie ()
     results.clean ();
 }
 
+void testv2 ()
+{
+    v2 result = v2 { 1, 2 } + v2 { 5, 6 };
+
+    assert (result.x == 6 && result.y == 8);
+
+    result = result - v2 { 5, 7 };
+
+    assert (result.x == 1 && result.y == 1);
+
+    result = result * v2 { 10, 10 };
+
+    assert (result.x == 10 && result.y == 10);
+
+    result = result / v2 { 10, 10 };
+
+    assert (result.x == 1 && result.y == 1);
+}
+
+void testv3 ()
+{
+    v3 result = v3 { 1, 2, 4 } + v3 { 5, 6, 10 };
+
+    assert (result.x == 6 && result.y == 8 && result.z == 14);
+
+    result = result - v3 { 5, 7, 8 };
+
+    assert (result.x == 1 && result.y == 1 && result.z == 6);
+
+    result = result * v3 { 10, 10, 5 };
+
+    assert (result.x == 10 && result.y == 10 && result.z == 30);
+
+    result = result / v3 { 10, 10, 10 };
+
+    assert (result.x == 1 && result.y == 1 && result.z == 3);
+}
+
+void testv4 ()
+{
+    v4 result = v4 { 1, 2, 4, 8 } + v4 { 5, 6, 10, 12 };
+
+    assert (result.x == 6 && result.y == 8 && result.z == 14 && result.w == 20);
+
+    result = result - v4 { 5, 7, 8, 10 };
+
+    assert (result.x == 1 && result.y == 1 && result.z == 6 && result.w == 10);
+
+    result = result * v4 { 10, 10, 5, 45 };
+
+    assert (result.x == 10 && result.y == 10 && result.z == 30
+            && result.w == 450);
+
+    result = result / v4 { 10, 10, 10, 5 };
+
+    assert (result.x == 1 && result.y == 1 && result.z == 3 && result.w == 90);
+}
+
 #define RunTest(fn) \
     fn ();          \
-    debug (#fn " => success");
+    log (#fn " => success");
 
 void runTestCases ()
 {
@@ -178,6 +237,9 @@ void runTestCases ()
     RunTest (testArray);
     RunTest (testAVL);
     RunTest (testTrie);
+    RunTest (testv2);
+    RunTest (testv3);
+    RunTest (testv4);
 }
 
 #endif
