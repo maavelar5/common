@@ -8,6 +8,9 @@
 
 const float PI = 3.141592f, DEGREES = 180.f;
 
+#define DEGREES(Radians) (Radians * (180.f / PI));
+#define RADIANS(Degrees) (Degrees * (PI / 180.f))
+
 union v2;
 union v3;
 union v4;
@@ -364,7 +367,7 @@ void copy (float in[4][4], float out[4][4])
             out[i][j] = in[i][j];
 }
 
-mat4 mul (mat4 m1, mat4 m2)
+mat4 operator* (mat4 m1, mat4 m2)
 {
     mat4 result;
 
@@ -386,7 +389,7 @@ mat4 mul (mat4 m1, mat4 m2)
     return result;
 }
 
-inline void translate (mat4 &matrix, v2 pos)
+void translate (mat4 &matrix, v2 pos)
 {
     mat4 trans_matrix = identity ();
 
@@ -398,10 +401,10 @@ inline void translate (mat4 &matrix, v2 pos)
     trans_matrix[0][3] = pos.x;
     trans_matrix[1][3] = pos.y;
 
-    matrix = mul (matrix, trans_matrix);
+    matrix = matrix * trans_matrix;
 }
 
-inline void scale (mat4 &matrix, v2 size)
+void scale (mat4 &matrix, v2 size)
 {
     mat4 scale_matrix = identity ();
 
@@ -413,7 +416,7 @@ inline void scale (mat4 &matrix, v2 size)
     scale_matrix[0][0] = size.x;
     scale_matrix[1][1] = size.y;
 
-    matrix = mul (matrix, scale_matrix);
+    matrix = matrix * scale_matrix;
 }
 
 void rotateZ (mat4 &matrix, float angle)
@@ -425,15 +428,15 @@ void rotateZ (mat4 &matrix, float angle)
 
     angle = angle * (3.14159f / 180.f);
 
-    mat4 rotation_matrix = identity ();
+    mat4 rotationMatrix = identity ();
 
-    rotation_matrix[0][0] = cos (angle);
-    rotation_matrix[0][1] = -sin (angle);
+    rotationMatrix[0][0] = cos (angle);
+    rotationMatrix[0][1] = -sin (angle);
 
-    rotation_matrix[1][0] = sin (angle);
-    rotation_matrix[1][1] = cos (angle);
+    rotationMatrix[1][0] = sin (angle);
+    rotationMatrix[1][1] = cos (angle);
 
-    matrix = mul (matrix, rotation_matrix);
+    matrix = matrix * rotationMatrix;
 }
 
 void rotateY (mat4 &matrix, float angle)
@@ -445,15 +448,15 @@ void rotateY (mat4 &matrix, float angle)
 
     angle = angle * (3.14159f / 180.f);
 
-    mat4 rotation_matrix = identity ();
+    mat4 rotationMatrix = identity ();
 
-    rotation_matrix[0][0] = cos (angle);
-    rotation_matrix[0][2] = -sin (angle);
+    rotationMatrix[0][0] = cos (angle);
+    rotationMatrix[0][2] = -sin (angle);
 
-    rotation_matrix[2][0] = -sin (angle);
-    rotation_matrix[2][2] = cos (angle);
+    rotationMatrix[2][0] = -sin (angle);
+    rotationMatrix[2][2] = cos (angle);
 
-    matrix = mul (matrix, rotation_matrix);
+    matrix = matrix * rotationMatrix;
 }
 
 void rotateX (mat4 &matrix, float angle)
@@ -465,47 +468,47 @@ void rotateX (mat4 &matrix, float angle)
 
     angle = angle * (3.14159f / 180.f);
 
-    mat4 rotation_matrix = identity ();
+    mat4 rotationMatrix = identity ();
 
-    rotation_matrix[1][1] = cos (angle);
-    rotation_matrix[1][2] = -sin (angle);
+    rotationMatrix[1][1] = cos (angle);
+    rotationMatrix[1][2] = -sin (angle);
 
-    rotation_matrix[2][1] = sin (angle);
-    rotation_matrix[2][2] = cos (angle);
+    rotationMatrix[2][1] = sin (angle);
+    rotationMatrix[2][2] = cos (angle);
 
-    matrix = mul (matrix, rotation_matrix);
+    matrix = matrix * rotationMatrix;
 }
 
 void translate (mat4 &matrix, v3 pos)
 {
-    mat4 trans_matrix = identity ();
+    mat4 transMatrix = identity ();
 
     // {1, 0, 0, pos.x}
     // {0, 1, 0, pos.y}
     // {0, 0, 1, pos.z}
     // {0, 0, 0, 1    }
 
-    trans_matrix[0][3] = pos.x;
-    trans_matrix[1][3] = pos.y;
-    trans_matrix[2][3] = pos.z;
+    transMatrix[0][3] = pos.x;
+    transMatrix[1][3] = pos.y;
+    transMatrix[2][3] = pos.z;
 
-    matrix = mul (matrix, trans_matrix);
+    matrix = matrix * transMatrix;
 }
 
 void scale (mat4 &matrix, v3 size)
 {
-    mat4 scale_matrix = identity ();
+    mat4 scaleMatrix = identity ();
 
     // {size.x, 0,      0,      0}
     // {0,      size.y, 0,      0}
     // {0,      0,      size.z, 0}
     // {0,      0,      0,      1}
 
-    scale_matrix[0][0] = size.x;
-    scale_matrix[1][1] = size.y;
-    scale_matrix[2][2] = size.z;
+    scaleMatrix[0][0] = size.x;
+    scaleMatrix[1][1] = size.y;
+    scaleMatrix[2][2] = size.z;
 
-    matrix = mul (matrix, scale_matrix);
+    matrix = matrix * scaleMatrix;
 }
 
 inline mat4 ortho (float W, float H)
@@ -566,19 +569,18 @@ inline mat4 perspective (float W, float H)
 // the glm way.. its flipped for stupid math reasons
 inline mat4 perspective (float fovy, float aspect, float zNear, float zFar)
 {
-    // TODO: re implement this
-    //  fovy = to_radians (fovy);
+    fovy = RADIANS (fovy);
 
-    float const rad         = fovy;
-    float const tanHalfFovy = tan (rad / static_cast<float> (2));
+    const float rad         = fovy;
+    const float tanHalfFovy = tan (rad / 2.f);
 
     mat4 Result = zero_mat4 ();
 
-    Result[0][0] = static_cast<float> (1) / (aspect * tanHalfFovy);
-    Result[1][1] = static_cast<float> (1) / (tanHalfFovy);
+    Result[0][0] = 1.f / (aspect * tanHalfFovy);
+    Result[1][1] = 1.f / (tanHalfFovy);
     Result[2][2] = -(zFar + zNear) / (zFar - zNear);
-    Result[3][2] = -static_cast<float> (1);
-    Result[2][3] = -(static_cast<float> (2) * zFar * zNear) / (zFar - zNear);
+    Result[3][2] = -1.f;
+    Result[2][3] = -(2.f * zFar * zNear) / (zFar - zNear);
 
     return Result;
 }

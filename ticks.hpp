@@ -17,13 +17,13 @@ namespace ticks
 
         accumulator = frame = current = 0;
 
-        previous      = (get_ticks () / 1000.f);
+        previous      = (api::getTicks () / 1000.f);
         interpolation = 0;
     }
 
     void update (bool paused = false)
     {
-        current  = (get_ticks () / 1000.f);
+        current  = (api::getTicks () / 1000.f);
         frame    = current - previous;
         previous = current;
 
@@ -32,7 +32,7 @@ namespace ticks
 
         accumulator += frame;
 
-        fps = frames / (get_ticks () / 1000.f);
+        fps = frames / (api::getTicks () / 1000.f);
         frames++;
     }
 
