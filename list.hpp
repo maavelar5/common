@@ -33,7 +33,11 @@ template <class Type> class list
 
     void push (Type val)
     {
-        Node *node = new Node { val, nullptr, nullptr };
+        Node *node = new Node {
+            .val  = val,
+            .next = nullptr,
+            .prev = nullptr,
+        };
 
         if (!first)
         {
@@ -85,12 +89,7 @@ template <class Type> class list
         Node *it = first;
 
         while (it)
-        {
-            if (it->val == val)
-                it = remove (it);
-            else
-                it = it->next;
-        }
+            it = (it->val == val) ? remove (it) : it->next;
     }
 
     typedef bool (*compareFn) (const Type a, const Type b);
@@ -99,12 +98,13 @@ template <class Type> class list
         Node *it = first;
 
         while (it)
-        {
-            if (fn (*it, val))
-                it = remove (it);
-            else
-                it = it->next;
-        }
+            it = fn (*it, val) ? remove (it) : it->next;
+    }
+
+    void clean ()
+    {
+        while (first)
+            remove (first);
     }
 
     typedef void (*forEachFn) (Type &val);

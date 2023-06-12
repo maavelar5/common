@@ -531,7 +531,7 @@ void copy (float in[4][4], float out[4][4])
 
 mat4 operator* (mat4 m1, mat4 m2)
 {
-    mat4 result;
+    mat4 result = { 0 };
 
     for (int i = 0; i < 4; i++)
     {

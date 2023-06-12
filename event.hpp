@@ -3,60 +3,64 @@
 
 #include "math_data.hpp"
 
-enum class EventDevice
+enum class Device
 {
-    MOUSE = 1,
+    UNKNOWN = 0,
+    MOUSE   = 1,
     TOUCH,
     GAMEPAD,
     KEYBOARD,
+
+    QUIT,
 };
 
-enum class PressEvent
+enum class Action
 {
     PRESS = 1,
     RELEASE,
+    MOTION,
 };
 
 enum class MouseButton
 {
-    LEFT = 1,
+    UNKNOWN = 0,
+    LEFT    = 1,
     RIGHT,
     MIDDLE,
     NEXT,
     PREV,
-    UNKNOWN,
 };
 
 enum class Key
 {
     UNKNOWN = 0,
 
-    A = 1,
-    B,
-    C,
-    D,
-    E,
-    F,
-    G,
-    H,
-    I,
-    J,
-    K,
-    L,
-    M,
-    N,
-    O,
-    P,
-    Q,
-    R,
-    S,
-    T,
-    U,
-    V,
-    W,
-    X,
-    Y,
-    Z,
+    a,
+    b,
+    c,
+    d,
+    e,
+    f,
+    g,
+    h,
+    i,
+    j,
+    k,
+    l,
+    m,
+    n,
+    o,
+    p,
+    q,
+    r,
+    s,
+    t,
+    u,
+    v,
+    w,
+    x,
+    y,
+    z,
 
     ALT,
     CTRL,
@@ -66,21 +70,21 @@ enum class Key
 
 struct MouseEvent
 {
-    v2s         currPos, prevPos;
-    PressEvent  press;
+    v2s         pos;
+    Action      action;
     MouseButton button;
 };
 
 struct KeyboardEvent
 {
-    Key        key;
-    uint8      repeat;
-    PressEvent event;
+    Key    key;
+    uint8  repeat;
+    Action action;
 };
 
 struct Event
 {
-    EventDevice type;
+    Device type;
 
     union
     {

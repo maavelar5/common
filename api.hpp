@@ -30,7 +30,8 @@ namespace api
     Window createWindow (const char* name, v2s pos, v2s size, u8 flags);
     void   createRenderer ();
 
-    bool nextEvent (Event& e);
+    bool getNextEvent (Event& e);
+    void pushEvent (Event& e);
 }
 
 #ifdef SDL

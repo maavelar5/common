@@ -282,6 +282,56 @@ void testList ()
         assert (v == result[i++]);
 }
 
+void testEvents ()
+{
+    Window w = api::createWindow ("ok", { 0, 0 }, { 320, 320 }, 0);
+
+    array<Key>   expected, result;
+    array<Event> events;
+
+    Event myEvent = {
+        .type = Device::KEYBOARD,
+        .keyboard {
+            Key::UNKNOWN,
+            0,
+            Action::PRESS,
+        },
+    };
+
+    for (int i = 0; i < (int)Key::z; i++)
+    {
+        events.push (myEvent);
+        expected.push ((Key)i);
+        myEvent.keyboard.key = (Key)(i + 1);
+    }
+
+    myEvent.type = Device::QUIT;
+
+    events.push (myEvent);
+
+    for (auto e : events)
+        api::pushEvent (e);
+
+    Event e;
+    bool  run = true;
+
+    while (run)
+    {
+        while (api::getNextEvent (e))
+        {
+            switch (e.type)
+            {
+                case Device::QUIT: run = false; break;
+                case Device::KEYBOARD: result.push (e.keyboard.key); break;
+                default: break;
+            }
+        }
+    }
+
+    for (int i = 0; i < expected.length (); i++)
+        assert (expected[i] == result[i]);
+}
+
 #define RunTest(fn)          \
     log (#fn " => started"); \
     fn ();                   \
@@ -300,6 +350,7 @@ void runTestCases ()
     RunTest (testv4);
     RunTest (testWindow);
     RunTest (testList);
+    RunTest (testEvents);
 }
 
 #endif

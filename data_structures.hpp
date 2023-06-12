@@ -84,10 +84,6 @@ template <class Key, class Val> struct HashTable
         else
             return arr[id];
     }
-
-    Val *operator[] (Key key)
-    {
-    }
 };
 
 #endif
