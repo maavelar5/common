@@ -1,0 +1,7 @@
+cmake_minimum_required (VERSION 3.6.0)
+project (common)
+find_package(SDL2 REQUIRED)
+include_directories(${SDL2_INCLUDE_DIRS})
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+add_executable(${PROJECT_NAME} main.cc)
+target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})

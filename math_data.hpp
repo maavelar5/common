@@ -1,10 +1,10 @@
 #ifndef MATH_DATA
 #define MATH_DATA
 
-#include "api.hpp"
-
 #include <cassert>
 #include <cmath>
+
+#include "typedefs.hpp"
 
 const float PI = 3.141592f, DEGREES = 180.f;
 
@@ -14,6 +14,14 @@ const float PI = 3.141592f, DEGREES = 180.f;
 union v2;
 union v3;
 union v4;
+
+union v2s;
+union v3s;
+union v4s;
+
+union v2u;
+union v3u;
+union v4u;
 
 union v2
 {
@@ -40,6 +48,11 @@ union v2s
     struct
     {
         s32 x, y;
+    };
+
+    struct
+    {
+        s32 w, h;
     };
 
     s32 E[2];
@@ -73,6 +86,21 @@ union v4
     };
 
     float E[4];
+};
+
+union v4u
+{
+    struct
+    {
+        u8 x, y, z, w;
+    };
+
+    struct
+    {
+        u8 r, g, b, a;
+    };
+
+    u8 E[4];
 };
 
 // v2[s|u] operators
@@ -164,6 +192,91 @@ float length (v2 v)
 v2 normalize (v2 v)
 {
     return v / length (v);
+}
+
+v2s operator+ (v2s a, v2s b)
+{
+    v2s result;
+
+    result.x = a.x + b.x;
+    result.y = a.y + b.y;
+
+    return result;
+}
+
+v2s operator- (v2s a, v2s b)
+{
+    v2s result;
+
+    result.x = a.x - b.x;
+    result.y = a.y - b.y;
+
+    return result;
+}
+
+v2s operator* (v2s a, v2s b)
+{
+    v2s result;
+
+    result.x = a.x * b.x;
+    result.y = a.y * b.y;
+
+    return result;
+}
+
+v2s operator/ (v2s a, v2s b)
+{
+    v2s result;
+
+    result.x = a.x / b.x;
+    result.y = a.y / b.y;
+
+    return result;
+}
+
+v2s operator+ (v2s a, float v)
+{
+    v2s result;
+
+    result.x = a.x + v;
+    result.y = a.y + v;
+
+    return result;
+}
+
+v2s operator- (v2s a, float v)
+{
+    v2s result;
+
+    result.x = a.x - v;
+    result.y = a.y - v;
+
+    return result;
+}
+
+v2s operator* (v2s a, float v)
+{
+    v2s result;
+
+    result.x = a.x * v;
+    result.y = a.y * v;
+
+    return result;
+}
+
+v2s operator/ (v2s a, float v)
+{
+    v2s result;
+
+    result.x = a.x / v;
+    result.y = a.y / v;
+
+    return result;
+}
+
+bool operator== (v2s a, v2s b)
+{
+    return (a.x == b.x && a.y == b.y) ? true : false;
 }
 
 // v3[s|u] operators
@@ -314,6 +427,55 @@ v4 operator/ (v4 a, v4 b)
     return result;
 }
 
+// v4[s|u] operators
+v4u operator+ (v4u a, v4u b)
+{
+    v4u result;
+
+    result.x = a.x + b.x;
+    result.y = a.y + b.y;
+    result.z = a.z + b.z;
+    result.w = a.w + b.w;
+
+    return result;
+}
+
+v4u operator- (v4u a, v4u b)
+{
+    v4u result;
+
+    result.x = a.x - b.x;
+    result.y = a.y - b.y;
+    result.z = a.z - b.z;
+    result.w = a.w - b.w;
+
+    return result;
+}
+
+v4u operator* (v4u a, v4u b)
+{
+    v4u result;
+
+    result.x = a.x * b.x;
+    result.y = a.y * b.y;
+    result.z = a.z * b.z;
+    result.w = a.w * b.w;
+
+    return result;
+}
+
+v4u operator/ (v4u a, v4u b)
+{
+    v4u result;
+
+    result.x = a.x / b.x;
+    result.y = a.y / b.y;
+    result.z = a.z / b.z;
+    result.w = a.w / b.w;
+
+    return result;
+}
+
 inline v2 operator- (v2 a, v3 b)
 {
     return v2 { a.x - b.x, a.y - b.y };
@@ -341,7 +503,7 @@ mat4 identity ()
     };
 }
 
-mat4 zero_mat4 ()
+mat4 zeroMat4 ()
 {
     return {
         {
@@ -548,7 +710,7 @@ inline mat4 perspective (float W, float H)
     float zFar = 1000.f, zNear = 0.1f;
     float aspect = W / H;
 
-    mat4 result = zero_mat4 ();
+    mat4 result = zeroMat4 ();
 
     gluPerspective (45, aspect, zNear, zFar, b, t, l, r);
 
@@ -574,7 +736,7 @@ inline mat4 perspective (float fovy, float aspect, float zNear, float zFar)
     const float rad         = fovy;
     const float tanHalfFovy = tan (rad / 2.f);
 
-    mat4 Result = zero_mat4 ();
+    mat4 Result = zeroMat4 ();
 
     Result[0][0] = 1.f / (aspect * tanHalfFovy);
     Result[1][1] = 1.f / (tanHalfFovy);

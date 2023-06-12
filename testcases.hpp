@@ -1,6 +1,7 @@
 #ifndef TESTCASES
 #define TESTCASES
 
+#include "api.hpp"
 #include "data_structures.hpp"
 #include "math_data.hpp"
 #include "log.hpp"
@@ -17,21 +18,21 @@ void testUnique ()
     assert (set[4] == 5);
     assert (set[5] == 6);
 
-    assert (set.length == 6);
+    assert (set.length () == 6);
 
-    delete set.data;
+    set.clean ();
 
     set = unique (0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     assert (set[0] == 0);
-    assert (set.length == 1);
+    assert (set.length () == 1);
 }
 
 void testArray ()
 {
     array<int> arr = { 1, 1, 2, 2, 3, 3, 5, 5, 6 };
 
-    assert (arr.length == 9);
-    assert (arr.size == 16);
+    assert (arr.length () == 9);
+    assert (arr.size () == 16);
 
     assert (arr[0] == 1 && arr[1] == 1);
     assert (arr[2] == 2 && arr[3] == 2);
@@ -63,16 +64,16 @@ void testArray ()
 
     arr.resize (1);
 
-    assert (arr.length == 1);
-    assert (arr.size == 1);
+    assert (arr.length () == 1);
+    assert (arr.size () == 1);
 
     array<int> arr2 (alloc, 20);
 
-    assert (arr2.length == 20 && arr2.size == 20);
+    assert (arr2.length () == 20 && arr2.size () == 20);
 
     array<int *> arr3 (alloc, 30);
 
-    assert (arr3.length == 30 && arr3.size == 30);
+    assert (arr3.length () == 30 && arr3.size () == 30);
 }
 
 typedef void (*callback) (AVLTree<int>::Leaf *leaf, array<int> &results);
@@ -102,7 +103,8 @@ void testAVL ()
     assert (expected.equals (results));
 
     tree.clean ();
-    results.length = expected.length = 0;
+    results.reset ();
+    expected.reset ();
 
     expected.push (6, 2, 1, 0, 4, 3, 5, 10, 8, 7, 9, 15, 11, 22, 33);
     tree.push (4, 6, 5, 3, 1, 2, 10, 9, 7, 11, 15, 0, 8, 22, 33);
@@ -112,7 +114,8 @@ void testAVL ()
     assert (expected.equals (results));
 
     tree.clean ();
-    results.length = expected.length = 0;
+    results.reset ();
+    expected.reset ();
 
     expected.push (3, 2, 1, 5, 4, 6);
     tree.push (2, 1, 3, 5, 6, 4);
@@ -225,8 +228,63 @@ void testv4 ()
     assert (result.x == 1 && result.y == 1 && result.z == 3 && result.w == 90);
 }
 
-#define RunTest(fn) \
-    fn ();          \
+void testWindow ()
+{
+    Window window = api::createWindow ("aslkdjfkl", v2s { 0, 0 },
+                                       v2s { 320, 320 }, SOFTWARE);
+
+    api::move (window, v2s { 0, 0 });
+
+    assert (window.pos == (v2s { 0, 0 }));
+}
+
+void testList ()
+{
+    int        i      = 0;
+    list<int>  values = { 0, 1, 2, 3, 4 };
+    array<int> result = { 0, 1, 2, 3, 4 };
+
+    for (auto v : values)
+    {
+        assert (result[i] == v);
+        i++;
+    }
+
+    i = 0;
+    values.remove (values.begin ().node);
+    result.remove (0);
+
+    for (auto v : values)
+        assert (result[i++] == v);
+
+    i = 0;
+    values.remove (values.end ().node);
+    result.remove (3);
+
+    for (auto v : values)
+        assert (result[i++] == v);
+
+    i = 0;
+    values.remove (2);
+    result.remove (1);
+
+    for (auto v : values)
+        assert (result[i++] == v);
+
+    // for-range ref changes
+    for (auto &v : values)
+        v += 10;
+    for (auto &v : result)
+        v += 10;
+
+    i = 0;
+    for (auto v : values)
+        assert (v == result[i++]);
+}
+
+#define RunTest(fn)          \
+    log (#fn " => started"); \
+    fn ();                   \
     log (#fn " => success");
 
 void runTestCases ()
@@ -240,6 +298,8 @@ void runTestCases ()
     RunTest (testv2);
     RunTest (testv3);
     RunTest (testv4);
+    RunTest (testWindow);
+    RunTest (testList);
 }
 
 #endif

@@ -16,4 +16,14 @@ typedef int8_t  s8;
 typedef int16_t s16;
 typedef int32_t s32;
 
+#define SetBit(Modifier, Value)   Modifier |= (0x1 << Value)
+#define UnsetBit(Modifier, Value) Modifier &= ~(0x1 << Value)
+#define CheckBit(Modifier, Value) Modifier & (0x1 << Value)
+
+struct File
+{
+    u32   size;
+    char *content;
+};
+
 #endif
