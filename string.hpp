@@ -5,18 +5,26 @@
 
 struct string
 {
-    char       *nullTerminatedPtr;
+    char       *cstr;
     array<char> arr;
 
     string ()
     {
-        nullTerminatedPtr = nullptr;
+        cstr = nullptr;
     }
 
     string (const char *str)
     {
-        nullTerminatedPtr = nullptr;
+        cstr = nullptr;
         push (str);
+    }
+
+    ~string ()
+    {
+        arr.clean ();
+
+        if (cstr)
+            delete cstr;
     }
 
     void push (const char *str)
@@ -32,27 +40,27 @@ struct string
         arr.push (c);
     }
 
-    const char *nullTerminated ()
+    const char *c_str ()
     {
-        if (nullTerminatedPtr)
-            delete nullTerminatedPtr;
+        if (cstr)
+            delete cstr;
 
-        nullTerminatedPtr = new char[arr.length () + 1];
+        cstr = new char[arr.length () + 1];
 
         u32 i = 0;
 
         for (; i < arr.length (); i++)
-            nullTerminatedPtr[i] = arr[i];
+            cstr[i] = arr[i];
 
-        nullTerminatedPtr[arr.length ()] = '\0';
+        cstr[arr.length ()] = '\0';
 
-        return nullTerminatedPtr;
+        return cstr;
     }
 
     void clean ()
     {
-        if (nullTerminatedPtr)
-            delete nullTerminatedPtr;
+        if (cstr)
+            delete cstr;
         arr.clean ();
     }
 

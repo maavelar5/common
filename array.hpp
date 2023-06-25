@@ -19,14 +19,49 @@ template <class Type> class array
   public:
     array ()
     {
-        data    = 0;
+        data    = nullptr;
         _length = _size = 0;
     }
 
     array (Alloc, u32 size)
     {
         data    = new Type[_size = size];
-        _length = _size;
+        _length = 0;
+    }
+
+    array (const array<Type> &arr)
+    {
+        data  = nullptr;
+        _size = _length = 0;
+
+        copy (arr);
+    }
+
+    ~array ()
+    {
+        clean ();
+    }
+
+    void operator= (const array<Type> &arr)
+    {
+        copy (arr);
+    }
+
+    void copy (const array<Type> &arr)
+    {
+        _length = 0;
+
+        if (_size < arr.length ())
+        {
+            if (_size > 0)
+                delete[] data;
+
+            _size = arr.length ();
+            data  = new Type[_size];
+        }
+
+        for (u32 i = 0; i < arr.length (); i++)
+            push (arr[i]);
     }
 
     template <typename... Types> array (Type var1, Types... var2)
@@ -107,12 +142,12 @@ template <class Type> class array
         }
     }
 
-    Type &operator[] (u32 index)
+    Type &operator[] (u32 index) const
     {
         return at (index);
     }
 
-    Type &at (u32 index)
+    Type &at (u32 index) const
     {
         assert (index < _length);
 
@@ -170,12 +205,12 @@ template <class Type> class array
         _size = _length = 0;
     }
 
-    u32 length ()
+    u32 length () const
     {
         return _length;
     }
 
-    u32 size ()
+    u32 size () const
     {
         return _size;
     }

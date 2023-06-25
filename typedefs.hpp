@@ -1,6 +1,8 @@
 #ifndef TYPEDEFS
 #define TYPEDEFS
 
+#include <cstdlib>
+#include <cstdio>
 #include <cstdint>
 
 typedef int32_t  sint32;
@@ -23,7 +25,21 @@ typedef int32_t s32;
 struct File
 {
     u32   size;
-    char *content;
+    char* content;
 };
+
+size_t CURR_MEM_SIZE = 0;
+
+void* operator new (size_t size)
+{
+    CURR_MEM_SIZE++;
+    return malloc (size);
+}
+
+void operator delete (void* ptr)
+{
+    free (ptr);
+    CURR_MEM_SIZE++;
+}
 
 #endif

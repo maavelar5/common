@@ -26,9 +26,9 @@ namespace api
 
     void initVideo ();
 
-    void   move (Window& window, v2s pos);
-    Window createWindow (const char* name, v2s pos, v2s size, u8 flags);
-    void   createRenderer ();
+    void     move (Window& window, v2s pos);
+    Window   createWindow (const char* name, v2s pos, v2s size, u8 flags);
+    Renderer createRenderer ();
 
     bool getNextEvent (Event& e);
     void pushEvent (Event& e);

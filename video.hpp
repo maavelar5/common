@@ -9,7 +9,6 @@ enum WindowFlags
 {
     OPENGL = 1,
     SOFTWARE,
-    ACCELERATED,
 };
 
 struct Window
@@ -21,7 +20,7 @@ struct Window
 
 struct Renderer
 {
-    Color bg;
+    Color fg, bg;
 };
 
 #endif

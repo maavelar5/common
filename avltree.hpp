@@ -205,7 +205,7 @@ template <class T> struct AVLTree
         if (leaf->right)
             clean (leaf->right);
 
-        free (leaf);
+        delete leaf;
     }
 
     void clean ()

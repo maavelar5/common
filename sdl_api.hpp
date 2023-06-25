@@ -104,7 +104,7 @@ namespace api
             return NULL;
 
         sint64 res_size = SDL_RWsize (rw);
-        char  *res      = (char *)malloc (res_size + 1);
+        char  *res      = new char[res_size + 1];
 
         sint64 nb_read_total = 0, nb_read = 1;
         char  *buf = res;
@@ -120,7 +120,7 @@ namespace api
 
         if (nb_read_total != res_size)
         {
-            free (res);
+            delete[] res;
             return NULL;
         }
 
@@ -137,7 +137,7 @@ namespace api
             return { 0, 0 };
 
         sint64 res_size = SDL_RWsize (rw);
-        char  *res      = (char *)malloc (res_size + 1);
+        char  *res      = new char[res_size + 1];
 
         sint64 nb_read_total = 0, nb_read = 1;
         char  *buf = res;
@@ -153,7 +153,7 @@ namespace api
 
         if (nb_read_total != res_size)
         {
-            free (res);
+            delete[] res;
             return { 0, 0 };
         }
 
@@ -217,6 +217,21 @@ namespace api
             critical ();
 
         return window;
+    }
+
+    Renderer createRenderer ()
+    {
+        if (!sdlWindow)
+            critical ();
+
+        if (sdlRenderer != nullptr)
+            SDL_DestroyRenderer (sdlRenderer);
+
+        sdlRenderer = SDL_CreateRenderer (sdlWindow, -1,
+                                          SDL_RENDERER_ACCELERATED
+                                              | SDL_RENDERER_PRESENTVSYNC);
+
+        return Renderer {};
     }
 
     void move (Window &window, v2s pos)

@@ -76,7 +76,7 @@ struct Trie
 
     void goDeep (array<string> &arr, string &s, Leaf &leaf)
     {
-        string copy ((const char *)s.nullTerminated ());
+        string copy ((const char *)s.c_str ());
 
         copy.push (leaf.data);
 
@@ -99,7 +99,7 @@ struct Trie
 
         if (leaf)
         {
-            string n (str.nullTerminated ());
+            string n (str.c_str ());
 
             for (u32 i = 0; i < leaf->children.length (); i++)
                 goDeep (result, n, leaf->children[i]);

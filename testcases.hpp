@@ -69,11 +69,11 @@ void testArray ()
 
     array<int> arr2 (alloc, 20);
 
-    assert (arr2.length () == 20 && arr2.size () == 20);
+    assert (arr2.length () == 0 && arr2.size () == 20);
 
     array<int *> arr3 (alloc, 30);
 
-    assert (arr3.length () == 30 && arr3.size () == 30);
+    assert (arr3.length () == 0 && arr3.size () == 30);
 }
 
 typedef void (*callback) (AVLTree<int>::Leaf *leaf, array<int> &results);
@@ -145,27 +145,27 @@ void testTrie ()
 
     array<string> results = trie.getCandidates (string ("a"));
 
-    assert (strcmp (results[0].nullTerminated (), "anci") == 0);
-    assert (strcmp (results[1].nullTerminated (), "anyi") == 0);
-    assert (strcmp (results[2].nullTerminated (), "anpi") == 0);
-    assert (strcmp (results[3].nullTerminated (), "anxi") == 0);
-    assert (strcmp (results[4].nullTerminated (), "apci") == 0);
-    assert (strcmp (results[5].nullTerminated (), "apce") == 0);
+    assert (strcmp (results[0].c_str (), "anci") == 0);
+    assert (strcmp (results[1].c_str (), "anyi") == 0);
+    assert (strcmp (results[2].c_str (), "anpi") == 0);
+    assert (strcmp (results[3].c_str (), "anxi") == 0);
+    assert (strcmp (results[4].c_str (), "apci") == 0);
+    assert (strcmp (results[5].c_str (), "apce") == 0);
 
     results.clean ();
 
     results = trie.getCandidates (string ("ap"));
 
-    assert (strcmp (results[0].nullTerminated (), "apci") == 0);
-    assert (strcmp (results[1].nullTerminated (), "apce") == 0);
+    assert (strcmp (results[0].c_str (), "apci") == 0);
+    assert (strcmp (results[1].c_str (), "apce") == 0);
 
     results.clean ();
 
     results = trie.getCandidates (string ("en"));
-    assert (strcmp (results[0].nullTerminated (), "enci") == 0);
-    assert (strcmp (results[1].nullTerminated (), "enyi") == 0);
-    assert (strcmp (results[2].nullTerminated (), "enpi") == 0);
-    assert (strcmp (results[3].nullTerminated (), "enxi") == 0);
+    assert (strcmp (results[0].c_str (), "enci") == 0);
+    assert (strcmp (results[1].c_str (), "enyi") == 0);
+    assert (strcmp (results[2].c_str (), "enpi") == 0);
+    assert (strcmp (results[3].c_str (), "enxi") == 0);
 
     results.clean ();
 }
