@@ -7,6 +7,7 @@
 #include "memory.hpp"
 #include "typedefs.hpp"
 #include "math_data.hpp"
+#include "file.hpp"
 
 struct Event;
 struct Window;

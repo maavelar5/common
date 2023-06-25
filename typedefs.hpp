@@ -22,12 +22,6 @@ typedef int32_t s32;
 #define UnsetBit(Modifier, Value) Modifier &= ~(0x1 << Value)
 #define CheckBit(Modifier, Value) Modifier & (0x1 << Value)
 
-struct File
-{
-    u32   size;
-    char* content;
-};
-
 size_t CURR_MEM_SIZE = 0;
 
 void* operator new (size_t size)
