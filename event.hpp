@@ -91,6 +91,9 @@ struct Event
         MouseEvent    mouse;
         KeyboardEvent keyboard;
     };
+
+    static bool getNext (Event &e);
+    static void push (Event &e);
 };
 
 #endif

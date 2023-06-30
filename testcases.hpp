@@ -230,10 +230,9 @@ void testv4 ()
 
 void testWindow ()
 {
-    Window window = api::createWindow ("aslkdjfkl", v2s { 0, 0 },
-                                       v2s { 320, 320 }, SOFTWARE);
+    Window window ("aslkdjfkl", v2s { 0, 0 }, v2s { 320, 320 }, SOFTWARE);
 
-    api::move (window, v2s { 0, 0 });
+    window.move (v2s { 0, 0 });
 
     assert (window.pos == (v2s { 0, 0 }));
 }
@@ -284,7 +283,7 @@ void testList ()
 
 void testEvents ()
 {
-    Window w = api::createWindow ("ok", { 0, 0 }, { 320, 320 }, 0);
+    Window w ("ok", { 0, 0 }, { 320, 320 }, 0);
 
     array<Key>   expected, result;
     array<Event> events;
@@ -310,14 +309,14 @@ void testEvents ()
     events.push (myEvent);
 
     for (auto e : events)
-        api::pushEvent (e);
+        Event::push (e);
 
     Event e;
     bool  run = true;
 
     while (run)
     {
-        while (api::getNextEvent (e))
+        while (Event::getNext (e))
         {
             switch (e.type)
             {

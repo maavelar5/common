@@ -44,8 +44,6 @@ void error (const char* msg)
 
     if (msg)
         strcat (str, msg);
-    else
-        strcat (str, SDL_GetError ());
 
     api::errout (str, nullptr);
 
