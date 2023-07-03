@@ -1,107 +1,9 @@
-#ifndef MATH_DATA
-#define MATH_DATA
-
-#include <cassert>
-#include <cmath>
-
-#include "typedefs.hpp"
+#include "../def/math_data.hpp"
 
 const float PI = 3.141592f, DEGREES = 180.f;
 
 #define DEGREES(Radians) (Radians * (180.f / PI));
 #define RADIANS(Degrees) (Degrees * (PI / 180.f))
-
-union v2;
-union v3;
-union v4;
-
-union v2s;
-union v3s;
-union v4s;
-
-union v2u;
-union v3u;
-union v4u;
-
-union v2
-{
-    struct
-    {
-        float x, y;
-    };
-
-    float E[2];
-};
-
-union v2u
-{
-    struct
-    {
-        u32 x, y;
-    };
-
-    u32 E[2];
-};
-
-union v2s
-{
-    struct
-    {
-        s32 x, y;
-    };
-
-    struct
-    {
-        s32 w, h;
-    };
-
-    s32 E[2];
-};
-
-union v3
-{
-    struct
-    {
-        float x, y, z;
-    };
-
-    struct
-    {
-        float r, g, b;
-    };
-
-    float E[3];
-};
-
-union v4
-{
-    struct
-    {
-        float x, y, z, w;
-    };
-
-    struct
-    {
-        float r, g, b, a;
-    };
-
-    float E[4];
-};
-
-union v4u
-{
-    struct
-    {
-        u8 x, y, z, w;
-    };
-
-    struct
-    {
-        u8 r, g, b, a;
-    };
-
-    u8 E[4];
-};
 
 // v2[s|u] operators
 v2 operator+ (v2 a, v2 b)
@@ -481,16 +383,6 @@ inline v2 operator- (v2 a, v3 b)
     return v2 { a.x - b.x, a.y - b.y };
 }
 
-struct mat4
-{
-    float rows[4][4];
-
-    float *operator[] (int i)
-    {
-        return rows[i];
-    }
-};
-
 mat4 identity ()
 {
     return {
@@ -747,7 +639,7 @@ inline mat4 perspective (float fovy, float aspect, float zNear, float zFar)
     return Result;
 }
 
-inline mat4 getModel (v2 pos, v2 size, float angle = 0, bool center = true)
+inline mat4 getModel (v2 pos, v2 size, float angle, bool center)
 {
     mat4 matrix = identity ();
 
@@ -779,5 +671,3 @@ inline mat4 getModel (v3 pos, v3 size, v3 angle)
 
     return matrix;
 }
-
-#endif

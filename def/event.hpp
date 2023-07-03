@@ -35,7 +35,13 @@ enum class Key
 {
     UNKNOWN = 0,
 
-    a,
+    ALT,
+    CTRL,
+    SUPER,
+    SHIFT,
+    SPACE = ' ',
+
+    a = 'a',
     b,
     c,
     d,
@@ -62,10 +68,6 @@ enum class Key
     y,
     z,
 
-    ALT,
-    CTRL,
-    SUPER,
-    SHIFT,
 };
 
 struct MouseEvent
@@ -92,8 +94,8 @@ struct Event
         KeyboardEvent keyboard;
     };
 
-    static bool getNext (Event &e);
     static void push (Event &e);
+    static bool getNext (Event &e);
 };
 
 #endif

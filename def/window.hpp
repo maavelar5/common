@@ -4,11 +4,11 @@
 #include "string.hpp"
 #include "typedefs.hpp"
 #include "math_data.hpp"
+#include "utils.hpp"
 
 enum WindowFlags
 {
-    OPENGL = 1,
-    SOFTWARE,
+    SHOWN = 1
 };
 
 struct Window
@@ -21,7 +21,9 @@ struct Window
     Window (const char* name, v2s pos, v2s size, u8 flags);
 
     void move (v2s pos);
+    void draw (v4u color);
     void init (const char* name, v2s pos, v2s size, u8 flags);
+    void clear (Color color);
 };
 
 #endif

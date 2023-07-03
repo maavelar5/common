@@ -7,7 +7,11 @@
 #include "typedefs.hpp"
 #include "math_data.hpp"
 
-typedef v4u Color;
+struct Color
+{
+    u8 r, g, b, a;
+    v4 norm;
+};
 
 enum RGBA
 {

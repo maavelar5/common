@@ -1,14 +1,7 @@
-#ifndef TICKS
-#define TICKS
-
-#include "log.hpp"
+#include "../def/ticks.hpp"
 
 namespace ticks
 {
-    float fps, step, accumulator, frame, current, previous, interpolation,
-        factor;
-    uint32 frames;
-
     void init ()
     {
         step   = 0.01;
@@ -21,7 +14,7 @@ namespace ticks
         interpolation = 0;
     }
 
-    void update (bool paused = false)
+    void update (bool paused)
     {
         current  = (api::getTicks () / 1000.f);
         frame    = current - previous;
@@ -46,5 +39,3 @@ namespace ticks
         return pos * interpolation + prev * (1.0f - interpolation);
     }
 };
-
-#endif

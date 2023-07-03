@@ -8,3 +8,5 @@ cmake_install.cmake
 common
 makefile
 compile_commands.json
+*.so
+*.a

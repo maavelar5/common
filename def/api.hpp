@@ -4,14 +4,7 @@
 #define SDL
 
 #include <cstdarg>
-#include "memory.hpp"
 #include "typedefs.hpp"
-#include "math_data.hpp"
-#include "file.hpp"
-
-struct Event;
-struct Window;
-struct Renderer;
 
 namespace api
 {
@@ -22,9 +15,5 @@ namespace api
 
     uint32 getTicks ();
 }
-
-#ifdef SDL
-#include "sdl/sdl.hpp"
-#endif
 
 #endif

@@ -1,8 +1,4 @@
-#ifndef LOG
-#define LOG
-
-#include <cstring>
-#include "api.hpp"
+#include "../def/log.hpp"
 
 #define STR_SIZE 4096
 
@@ -49,5 +45,3 @@ void error (const char* msg)
 
     exit (1);
 }
-
-#endif

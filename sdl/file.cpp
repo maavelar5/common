@@ -2,7 +2,7 @@
 #define COMMON_SDL_FILE
 
 #include "SDL.h"
-#include "../file.hpp"
+#include "../def/file.hpp"
 
 void File::read (const char *filename)
 {

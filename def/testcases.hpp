@@ -230,7 +230,7 @@ void testv4 ()
 
 void testWindow ()
 {
-    Window window ("aslkdjfkl", v2s { 0, 0 }, v2s { 320, 320 }, SOFTWARE);
+    Window window ("aslkdjfkl", v2s { 0, 0 }, v2s { 320, 320 }, SHOWN);
 
     window.move (v2s { 0, 0 });
 

@@ -22,18 +22,9 @@ typedef int32_t s32;
 #define UnsetBit(Modifier, Value) Modifier &= ~(0x1 << Value)
 #define CheckBit(Modifier, Value) Modifier & (0x1 << Value)
 
-size_t CURR_MEM_SIZE = 0;
+extern size_t CURR_MEM_SIZE;
 
-void* operator new (size_t size)
-{
-    CURR_MEM_SIZE++;
-    return malloc (size);
-}
-
-void operator delete (void* ptr)
-{
-    free (ptr);
-    CURR_MEM_SIZE++;
-}
+void* operator new (size_t size);
+void  operator delete (void* ptr) noexcept;
 
 #endif

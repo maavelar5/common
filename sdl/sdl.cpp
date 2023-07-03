@@ -1,12 +1,10 @@
-#ifndef COMMON_SDL
-#define COMMON_SDL
-
 #include "SDL.h"
-#include "../typedefs.hpp"
+#include "../def/typedefs.hpp"
 
 namespace api
 {
     // SDL_GL_GetProcAddress ("laksjdlfksaj");
+
     void stdout (const char *str, va_list args)
     {
         SDL_LogMessageV (SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO,
@@ -42,12 +40,4 @@ namespace api
         if (SDL_Init (SDL_INIT_EVERYTHING) != 0)
             critical ();
     }
-
 }
-
-#include "event.hpp"
-#include "file.hpp"
-#include "window.hpp"
-#include "renderer.hpp"
-
-#endif
